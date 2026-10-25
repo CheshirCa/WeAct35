@@ -410,7 +410,7 @@ responsibility.
 
 ## ABI inventory
 
-The list below was obtained from the verified 1.0.0 ARM64 release DSO with
+The list below was obtained from the verified 1.0.0 release DSO with
 `nm -D --defined-only`; all `T/W` exports are covered above.  The one exception
 is deliberately visible but private `wx_device_bitmap_rect_internal`: it is
 declared only by non-installed `weact_bitmap_internal.h`, is used for internal

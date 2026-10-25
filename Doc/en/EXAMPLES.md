@@ -93,9 +93,8 @@ weact-cli /p:"$FS096_PATH" '/qr:FS096-QR-TEST'
 weact-cli /p:"$FS096_PATH" '/barcode:ean13:590123412345'
 ```
 
-Do not add `/w` or `/h`. FS096 must already be landscape for code mode; it has
-no verified preserve-orientation readback. A no-fit result is safer than
-clipping.
+Do not add `/w` or `/h`. Fullscreen FS096 code requests landscape before its
+bitmap; true overlays preserve state. A no-fit result is safer than clipping.
 
 ## 7. Run the FS35 terminal
 

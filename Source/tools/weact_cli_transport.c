@@ -123,11 +123,11 @@ int cli_connect(const cli_options *o,int model,wx_device_t **out,int *fd)
     wx_device_options_t options={.struct_size=sizeof(options),.model=WX_FS096,.width=160,.height=80,.orientation=2,.timeout_ms=5000,
         .transport={.context=fd,.write=tx,.now_ms=now_ms,.wait_writable=wait_tx}};
     if(wx_device_create(&options,out)!=WX_OK)goto failed;
-    /* Overlay and code modes preserve orientation; no speculative FS096
-     * readback. User must already have landscape. Ordinary text sets legacy2. */
-    if(!o->code_format && (!o->overlay || o->cls)) {
+    /* Match the established FS096 split: every fullscreen session first
+     * requests landscape, while a true overlay preserves the device state.
+     * This command also ends the manufacturer's cold-start splash. */
+    if(!o->overlay || o->cls) {
         if(wx_device_set_orientation(*out,2)!=WX_OK)goto failed;
-        struct timespec delay={.tv_nsec=100000000};while(nanosleep(&delay,&delay)<0)if(errno!=EINTR)goto failed;
     }
     return 0;
 failed:

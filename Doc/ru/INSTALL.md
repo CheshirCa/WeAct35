@@ -60,6 +60,12 @@ sudo apt remove weactterm libweact-dev libweact1
 
 Перед подтверждением просмотрите предложенную транзакцию.
 
+## Статус RISC-V RV2
+
+На Orange Pi RV2 с Ubuntu 24.04.5 LTS установлен и аппаратно smoke-проверен набор `riscv64` revision `1.0.0-3` upstream `1.0.0`. Получайте все пять release assets вместе с `SHA256SUMS`, проверяйте их, затем устанавливайте три неотладочных `.deb` через `apt`. ARM64 остаётся проверенным на `1.0.0-2`; не переименовывайте его в `1.0.0-3`.
+
+См. [RISC-V release notes](RELEASE-1.0.0-3.md) и [заметку о CDC ACM RV2](../../Misc/README.ru.md).
+
 ## Поиск USB и права
 
 До любой аппаратной команды:

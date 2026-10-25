@@ -400,7 +400,7 @@ managed confirmed FS35 и вызовите `wx_device_bitmap_region()`; сохр
 
 ## ABI inventory
 
-Список получен из проверенного 1.0.0 ARM64 DSO через
+Список получен из проверенного 1.0.0 DSO через
 `nm -D --defined-only`; все `T/W` exports описаны выше. Исключение — видимый,
 но private `wx_device_bitmap_rect_internal`: он объявлен только в
 неустанавливаемом `weact_bitmap_internal.h`, служит внутренним измерениям и

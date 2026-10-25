@@ -68,6 +68,12 @@ sudo apt remove weactterm libweact-dev libweact1
 
 Review the proposed package transaction before confirming it.
 
+## RISC-V RV2 package status
+
+Orange Pi RV2 with Ubuntu 24.04.5 LTS has an installed, hardware-smoke-tested `riscv64` package revision `1.0.0-3` of upstream `1.0.0`. Obtain its five release assets and `SHA256SUMS` together, verify them, then install the three non-debug `.deb` files with `apt`. ARM64 remains verified at `1.0.0-2`; do not relabel it as `1.0.0-3`.
+
+See [RISC-V release notes](RELEASE-1.0.0-3.md) and the [RV2 CDC ACM note](../../Misc/README.md).
+
 ## USB discovery and access
 
 List candidates before any hardware command:

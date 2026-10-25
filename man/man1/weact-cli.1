@@ -99,7 +99,7 @@ For FS35, add all four /x:X /y:Y /w:W /h:H values to render a code in one
 rectangle.  The rectangle must fit 480 by 320 including quiet zones; only that
 rectangle is transmitted and unknown pixels outside it are not read.  FS096
 codes are fullscreen only; regional parameters are rejected before opening it.
-FS096 must already be landscape for code mode.
+Fullscreen FS096 code requests landscape before its bitmap; a true overlay preserves device state.
 .SH EXAMPLES
 .EX
 weact-list --verbose

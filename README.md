@@ -6,7 +6,12 @@
 
 WeAct35 is a C library and a small Linux command-line toolset for WeAct USB displays. It is for Linux users who want text, images, QR codes, or barcodes, and for C developers who need display graphics and transport.
 
-The confirmed platform is **Orange Pi 3 LTS running Debian 13 ARM64**. The release catalog contains ARM64 packages only; it does not promise ready-made packages for other architectures.
+## Platform and release status
+
+- **ARM64:** Orange Pi 3 LTS, Debian 13; verified packaged revision is `1.0.0-2`.
+- **riscv64:** Orange Pi RV2, Ubuntu 24.04.5 LTS; installed and hardware-smoke-tested revision is `1.0.0-3` of upstream `1.0.0`.
+
+RISC-V packages are separate GitHub Release assets with their own `SHA256SUMS`; they are not committed in this source tree. Do not infer an ARM64 `1.0.0-3` release from the RISC-V revision.
 
 ## Displays
 
@@ -74,6 +79,8 @@ For Debian binaries use `dpkg-buildpackage -b -us -uc` in this directory when th
 - Русская версия: [терминал](Doc/ru/TERMINAL.md), [примеры](Doc/ru/EXAMPLES.md)
 
 The language directories are the canonical user documentation.
+- [RISC-V 1.0.0-3 release notes](Doc/en/RELEASE-1.0.0-3.md)
+- [Orange Pi RV2 CDC ACM note](Misc/README.md)
 
 After installing packages, concise English manual pages are available as
 `man weact-cli`, `man weact-list`, `man weactterm`, and `man 3 libweact`.

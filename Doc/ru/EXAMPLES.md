@@ -84,15 +84,12 @@ region не добавляйте: режим отвергается до отк�
 
 ## 6. Fullscreen code для FS096
 
-Назначение: использовать small display без unsupported partial geometry.
-
 ```sh
 weact-cli /p:"$FS096_PATH" '/qr:FS096-QR-TEST'
 weact-cli /p:"$FS096_PATH" '/barcode:ean13:590123412345'
 ```
 
-`/w` и `/h` не добавляйте. FS096 для code mode уже должен быть landscape; нет
-verified preserve-orientation readback. No-fit безопаснее clipping.
+`/w` и `/h` не добавляйте. Fullscreen FS096 перед bitmap запрашивает landscape; настоящий overlay сохраняет состояние. При no-fit команда безопасно завершается с ошибкой вместо clipping.
 
 ## 7. Запуск FS35 terminal
 

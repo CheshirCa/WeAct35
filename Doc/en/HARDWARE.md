@@ -61,10 +61,10 @@ byte-for-byte capture of LCD pixels.
 
 FS096 code rendering is fullscreen at 160×80. It has no verified orientation
 readback for preserved regional updates, so a code region is rejected before
-the serial port is opened. Code modes preserve orientation and require the
-display to already be landscape. Ordinary text/fullscreen paths use the legacy
-FS096 setup. FS096 QR is limited by its small display; the CLI reports no-fit
-instead of clipping. EAN is limited to one pixel per module.
+the serial port is opened. Every fullscreen path requests landscape before its
+bitmap; a true overlay preserves state. FS096 QR is limited by its small
+display; the CLI reports no-fit instead of clipping. EAN is limited to one
+pixel per module.
 
 ## Transfer and failure behavior
 
@@ -84,3 +84,5 @@ Hardware confirmation includes FS35 `/init`, separate regional Code 128 and
 QR, and FS096 fullscreen Code 128 and QR. No external scanner result is
 claimed. Do not infer untested firmware features, colour characteristics, or
 physical-pixel guarantees from this documentation.
+
+For the RV2 kernel CDC ACM limitation, see [Misc/README.md](../../Misc/README.md).
