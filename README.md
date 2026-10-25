@@ -1,5 +1,7 @@
 # WeAct35 1.0.0
 
+![Demo screenshots](Doc/Demo.jpg)
+
 [English](README.md) | [Русский](README.ru.md)
 
 WeAct35 is a C library and a small Linux command-line toolset for WeAct USB displays. It is for Linux users who want text, images, QR codes, or barcodes, and for C developers who need display graphics and transport.
