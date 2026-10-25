@@ -4,9 +4,11 @@
 
 ## Поддерживаемый релиз и платформа
 
-Готовый релиз — **WeAct35 1.0.0 для Debian ARM64**. Аппаратно и системно
-подтверждена Orange Pi 3 LTS с Debian 13 ARM64. Для других архитектур готовые
-пакеты и аппаратная квалификация не заявляются.
+WeAct35 1.0.0-3 собран и проверен на Debian 13 `amd64`, Debian 13 `arm64` и
+Ubuntu 24.04.5 `riscv64`. AMD64-пакеты установлены, а отдельные аппаратные
+сценарии визуально подтверждены на Debian 13. Результаты ARM64 и RISC-V
+суммированы в release notes. Проверьте список assets существующего релиза:
+локально подготовленные AMD64-пакеты нельзя скачать, пока они туда не добавлены.
 
 | Пакет | Назначение |
 |---|---|
@@ -22,8 +24,8 @@
 
 ```sh
 cd Release/arm64
-sha256sum -c SHA256SUMS
-sudo apt install ./libweact1_1.0.0_arm64.deb ./libweact-dev_1.0.0_arm64.deb ./weactterm_1.0.0_arm64.deb
+sha256sum -c SHA256SUMS-arm64.txt
+sudo apt install ./libweact1_1.0.0-3_arm64.deb ./libweact-dev_1.0.0-3_arm64.deb ./weactterm_1.0.0-3_arm64.deb
 ```
 
 `apt` разрешает runtime dependencies: FreeType, GDK-Pixbuf/GLib, libvterm,
@@ -44,7 +46,8 @@ man weactterm
 man 3 libweact
 ```
 
-Ожидаются версия `1.0.0`, архитектура `arm64` и pkg-config `1.0.0`.
+Ожидаются Debian package version `1.0.0-3`, архитектура `arm64` и
+pkg-config upstream API version `1.0.0`.
 `weactterm` устанавливает три program pages section 1; `libweact-dev` —
 library overview section 3. Полные двуязычные guides остаются в исходном
 каталоге документации.
@@ -62,9 +65,33 @@ sudo apt remove weactterm libweact-dev libweact1
 
 ## Статус RISC-V RV2
 
-На Orange Pi RV2 с Ubuntu 24.04.5 LTS установлен и аппаратно smoke-проверен набор `riscv64` revision `1.0.0-3` upstream `1.0.0`. Получайте все пять release assets вместе с `SHA256SUMS`, проверяйте их, затем устанавливайте три неотладочных `.deb` через `apt`. ARM64 остаётся проверенным на `1.0.0-2`; не переименовывайте его в `1.0.0-3`.
+На Orange Pi RV2 с Ubuntu 24.04.5 LTS установлен и аппаратно smoke-проверен набор `riscv64` revision `1.0.0-3` upstream `1.0.0`. Получайте все пять release assets вместе с `SHA256SUMS`, проверяйте их, затем устанавливайте три неотладочных `.deb` через `apt`. Пакеты ARM64 для Debian 13 также имеют revision `1.0.0-3`.
 
 См. [RISC-V release notes](RELEASE-1.0.0-3.md) и [заметку о CDC ACM RV2](../../Misc/README.ru.md).
+
+## Статус сборки из исходников для Debian 13 AMD64
+
+Общее дерево исходников собирается нативно на Debian 13 x86-64 (`amd64`)
+без архитектурных изменений кода. Динамическая/статическая библиотека,
+`weact-cli`, `weact-list`, `weact-fs35-features` и `weactterm` собраны с
+`-Wall -Wextra -Werror -O2 -std=c11` и Debian hardening flags. Терминальные/PTY
+и связанные offline runtime-регрессии пройдены. Версия upstream API
+остаётся `1.0.0`, SONAME — `libweact.so.1`.
+
+Для полной сборки, включая `weactterm`, нужен `libvterm-dev` с libvterm
+строго `0.3.3`; теперь эта зависимость доступна и полная сборка исходников
+на AMD64 пройдена. Существующий Debian packaging использует
+`Architecture: any` и выбирает на AMD64 `/usr/lib/x86_64-linux-gnu`.
+Пять бинарных AMD64-пакетов 1.0.0-3 прошли проверки checksum, lintian, ABI и
+dependencies; пользователь установил и проверил `libweact1`, `libweact-dev` и
+`weactterm`. На AMD64 визуально подтверждены очистка FS35, текст, QR и вывод
+QR в области. На FS096 true overlay сохранил QR при наложении крупного текста;
+первый fullscreen Code128 после cold-start прошёл в трёх попытках с новым
+USB-кабелем. В одной из двух дополнительных попыток со старым кабелем
+наблюдалось смещение изображения; это наблюдение не доказывает дефект ПО.
+Остальные аппаратные сценарии не подтверждены. AMD64-пакеты остаются локальными
+и ещё должны быть добавлены в assets существующего GitHub-релиза. Используйте
+существующие команды сборки ниже; статус ARM64/RISC-V не меняется.
 
 ## Поиск USB и права
 

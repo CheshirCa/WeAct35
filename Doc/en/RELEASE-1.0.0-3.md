@@ -1,9 +1,10 @@
 # WeAct35 1.0.0-3 release notes
 
-This release asset set contains native Debian packages for two separately
-validated platforms: Orange Pi 3 LTS / Debian 13 `arm64`, and Orange Pi RV2 /
-Ubuntu 24.04.5 LTS `riscv64`. It does not replace the preserved ARM64
-`1.0.0-2` asset set or rewrite the existing `v1.0.0` tag.
+This document catalogs native Debian packages for Debian 13 `amd64`, Debian 13
+`arm64`, and Orange Pi RV2 / Ubuntu 24.04.5 LTS `riscv64`. The AMD64 package
+set and addendum below are prepared locally; they are not part of the currently
+published GitHub Release until its assets are updated. This document does not
+rewrite historical tags or replace previously published files.
 
 ## Highlights
 
@@ -18,12 +19,12 @@ Ubuntu 24.04.5 LTS `riscv64`. It does not replace the preserved ARM64
 - The community RV2 CDC ACM module is not redistributed. See
   [the RV2 note](../../Misc/README.md).
 
-Download all five artifacts and the matching architecture-specific checksum
-asset for **one** architecture. The Release upload copies are named
-`SHA256SUMS-arm64.txt` and `SHA256SUMS-riscv64.txt` so every asset filename is
-unique. Verify the selected set with `sha256sum -c SHA256SUMS-arm64.txt` or
-`sha256sum -c SHA256SUMS-riscv64.txt`. The source package directories keep
-their original `SHA256SUMS` filenames. Release assets are not committed to Git.
+Download the five artifacts and matching architecture-specific checksum asset
+for **one** architecture. Use the architecture-specific manifest with each set. Existing upload copies
+are named `SHA256SUMS-arm64.txt` and `SHA256SUMS-riscv64.txt`; the proposed
+AMD64 name is `SHA256SUMS-amd64.txt`. Verify with `sha256sum -c <manifest>`.
+The source package directories keep their original manifest filenames. Binary
+packages belong in Release assets, not Git.
 
 ## ARM64 assets — Debian 13
 
@@ -54,3 +55,33 @@ sha256sum -c SHA256SUMS
 Use only the three non-debug packages for a normal installation. Hardware
 success remains visual/manual evidence; external barcode scanning, byte-level
 LCD capture, and broader reconnect matrices are not claimed.
+
+## AMD64 addendum — local package and hardware validation; publication pending
+
+The five AMD64 binary packages were built for Debian 13 and passed local
+checksum, lintian, ABI, dependency, and package-content checks. The user
+subsequently confirmed installation of `libweact1`, `libweact-dev`, and
+`weactterm`. ABI remains SONAME `libweact.so.1`, 79 exports, upstream API
+`1.0.0`. These facts do not imply that the assets have been uploaded.
+
+| File | SHA-256 |
+|---|---|
+| `libweact-dev_1.0.0-3_amd64.deb` | `54a24568b224eee2bcde18166bd73fd3e1e8e2a1d2675cb8999c236d540b239f` |
+| `libweact1-dbgsym_1.0.0-3_amd64.deb` | `546d6416e01031d6be2ab3b41d6cfb6ab9637ff39408c3634454f35f3b7a4754` |
+| `libweact1_1.0.0-3_amd64.deb` | `11e49a42d8be3d8ffdcd0c0fc59d29d407b3d08da2702bc62a79ce6348571a24` |
+| `weactterm-dbgsym_1.0.0-3_amd64.deb` | `99477e6304bebf722dac40e50a902151521b274461414377c8b4cb3ab2c48a3d` |
+| `weactterm_1.0.0-3_amd64.deb` | `47fc018e4f4fdda21b571ce94fb03ec5fa89517f3288793f03be5d2bd7709386` |
+
+On Debian 13 AMD64, user-confirmed visual results cover FS35 clearing, text,
+QR, and QR region output; FS096 true overlay retained QR under large text; and
+first fullscreen Code128 after reconnect passed three attempts using a new USB
+cable. One of two additional attempts using an older cable showed image shift;
+this observation does not establish a software defect. Fullscreen QR cold-start,
+ordinary FS096 text, and some terminal-exit/USB-release details were not
+confirmed. Exact hardware commands and exit codes were not supplied.
+
+The two AMD64 debug-symbol artifacts keep Debian's generated `.deb` extension.
+The checksum manifest is a sixth proposed asset named
+`SHA256SUMS-amd64.txt`. Upload all six only after reviewing the local report and
+confirming the target existing Release; do not overwrite or remove any existing
+asset.

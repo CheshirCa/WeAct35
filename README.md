@@ -8,10 +8,11 @@ WeAct35 is a C library and a small Linux command-line toolset for WeAct USB disp
 
 ## Platform and release status
 
-- **ARM64:** Orange Pi 3 LTS, Debian 13; verified packaged revision is `1.0.0-2`.
+- **AMD64:** Debian 13 x86-64; 1.0.0-3 build, packages, and selected FS35/FS096 hardware scenarios verified locally. AMD64 package assets are prepared locally and await addition to the existing GitHub Release.
+- **ARM64:** Orange Pi 3 LTS, Debian 13; verified packaged revision is `1.0.0-3`.
 - **riscv64:** Orange Pi RV2, Ubuntu 24.04.5 LTS; installed and hardware-smoke-tested revision is `1.0.0-3` of upstream `1.0.0`.
 
-RISC-V packages are separate GitHub Release assets with their own `SHA256SUMS`; they are not committed in this source tree. Do not infer an ARM64 `1.0.0-3` release from the RISC-V revision.
+Architecture-specific packages are distributed as separate Release assets with their own checksum manifests; they are not committed in this source tree. Confirm asset availability in the existing Release before downloading.
 
 ## Displays
 
@@ -37,8 +38,8 @@ Verify and install the three non-debug packages:
 
 ```sh
 cd Release/arm64
-sha256sum -c SHA256SUMS
-sudo apt install ./libweact1_1.0.0_arm64.deb ./libweact-dev_1.0.0_arm64.deb ./weactterm_1.0.0_arm64.deb
+sha256sum -c SHA256SUMS-arm64.txt
+sudo apt install ./libweact1_1.0.0-3_arm64.deb ./libweact-dev_1.0.0-3_arm64.deb ./weactterm_1.0.0-3_arm64.deb
 ```
 
 Discover devices without opening them:
@@ -79,7 +80,7 @@ For Debian binaries use `dpkg-buildpackage -b -us -uc` in this directory when th
 - Русская версия: [терминал](Doc/ru/TERMINAL.md), [примеры](Doc/ru/EXAMPLES.md)
 
 The language directories are the canonical user documentation.
-- [RISC-V 1.0.0-3 release notes](Doc/en/RELEASE-1.0.0-3.md)
+- [1.0.0-3 release notes and architecture package catalog](Doc/en/RELEASE-1.0.0-3.md)
 - [Orange Pi RV2 CDC ACM note](Misc/README.md)
 
 After installing packages, concise English manual pages are available as
@@ -89,6 +90,13 @@ by `libweact-dev`.
 
 ## Verification and limits
 
-The 1.0.0 ARM64 packages passed offline regression and ASan/UBSan checks. Hardware confirmation covers FS35 `/init`, regional Code 128 and QR, plus FS096 fullscreen Code 128 and QR. These are visual confirmations; external scanner reads and byte-for-byte capture of physical LCD pixels are not claimed.
+The AMD64 build and offline regression, including ASan/UBSan, passed; LSan was
+not checked. On Debian 13 AMD64, the user confirmed FS35 clearing, text, QR, and
+QR region output; FS096 true overlay preserved QR under large text, and first
+fullscreen Code128 after reconnect passed in three attempts with a new cable.
+One of two extra attempts with an older cable showed image shift; this is an
+observation, not a diagnosed software defect. User-confirmed ARM64 and RISC-V
+scenarios are summarized in the release notes. External scanner reads and
+byte-for-byte capture of physical LCD pixels are not claimed.
 
 The source bundle contains Expat/MIT, GPL-3.0-only, LGPL-2.1-or-later and BSD-3-Clause notices in `LICENSE` and `LICENSES/`. Public distribution remains subject to project-owner confirmation of GPL adaptation distribution rights.

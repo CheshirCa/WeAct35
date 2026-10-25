@@ -4,10 +4,12 @@
 
 ## Supported release and platform
 
-The ready-made release is **WeAct35 1.0.0 for Debian ARM64**. Hardware and
-system installation were confirmed on Orange Pi 3 LTS with Debian 13 ARM64.
-Other CPU architectures may be able to build from source, but no ready-made
-package or hardware qualification is claimed for them.
+WeAct35 1.0.0-3 has been built and checked on Debian 13 `amd64`, Debian 13
+`arm64`, and Ubuntu 24.04.5 `riscv64`. AMD64 packages were installed and
+selected hardware scenarios were visually confirmed on Debian 13. ARM64 and
+RISC-V evidence is summarized in the release notes. Check the existing
+release asset list for the package files available for download; locally
+prepared AMD64 artifacts are not downloadable until added there.
 
 The packages are:
 
@@ -25,8 +27,8 @@ From the top-level source export:
 
 ```sh
 cd Release/arm64
-sha256sum -c SHA256SUMS
-sudo apt install ./libweact1_1.0.0_arm64.deb ./libweact-dev_1.0.0_arm64.deb ./weactterm_1.0.0_arm64.deb
+sha256sum -c SHA256SUMS-arm64.txt
+sudo apt install ./libweact1_1.0.0-3_arm64.deb ./libweact-dev_1.0.0-3_arm64.deb ./weactterm_1.0.0-3_arm64.deb
 ```
 
 `apt` resolves declared runtime dependencies. The release uses FreeType,
@@ -48,8 +50,8 @@ man weactterm
 man 3 libweact
 ```
 
-Expected package version is `1.0.0`, architecture is `arm64`, and pkg-config
-reports `1.0.0`.
+Expected Debian package version is `1.0.0-3`, architecture is `arm64`, and
+pkg-config reports upstream API version `1.0.0`.
 
 `weactterm` installs the three section-1 program pages; `libweact-dev`
 installs the section-3 library overview. Full bilingual guides remain in the
@@ -70,9 +72,34 @@ Review the proposed package transaction before confirming it.
 
 ## RISC-V RV2 package status
 
-Orange Pi RV2 with Ubuntu 24.04.5 LTS has an installed, hardware-smoke-tested `riscv64` package revision `1.0.0-3` of upstream `1.0.0`. Obtain its five release assets and `SHA256SUMS` together, verify them, then install the three non-debug `.deb` files with `apt`. ARM64 remains verified at `1.0.0-2`; do not relabel it as `1.0.0-3`.
+Orange Pi RV2 with Ubuntu 24.04.5 LTS has an installed, hardware-smoke-tested `riscv64` package revision `1.0.0-3` of upstream `1.0.0`. Obtain its five release assets and `SHA256SUMS` together, verify them, then install the three non-debug `.deb` files with `apt`. ARM64 Debian 13 packages are also revision `1.0.0-3`.
 
 See [RISC-V release notes](RELEASE-1.0.0-3.md) and the [RV2 CDC ACM note](../../Misc/README.md).
+
+## Debian 13 AMD64 source-build status
+
+The same source tree builds natively on Debian 13 x86-64 (`amd64`), without
+architecture-specific code changes. The shared/static library, `weact-cli`,
+`weact-list`, `weact-fs35-features`, and `weactterm` were built with
+`-Wall -Wextra -Werror -O2 -std=c11` and Debian hardening flags. Terminal/PTY
+and related offline runtime regressions passed. Upstream API version
+remains `1.0.0` and SONAME remains `libweact.so.1`.
+
+The full build, including `weactterm`, requires `libvterm-dev` providing
+libvterm exactly `0.3.3`; this dependency is now available and the full AMD64
+source build has passed.
+The existing Debian packaging uses `Architecture: any` and selects
+`/usr/lib/x86_64-linux-gnu` on AMD64. The five 1.0.0-3 AMD64 binary packages passed checksum, lintian, ABI, and
+dependency checks; `libweact1`, `libweact-dev`, and `weactterm` were then
+installed and exercised by the user. FS35 clearing, text, QR, and QR region
+output were visually confirmed. On FS096, true overlay preserved a displayed
+QR while large text was drawn over it; fullscreen Code128 passed its first
+cold-start after reconnect in three attempts with a new USB cable. One of two
+extra attempts with an older cable showed image shift; this observation does
+not establish a software defect. Other hardware scenarios remain unconfirmed.
+The AMD64 packages are local and still need to be added to the existing GitHub
+release assets. Use the existing source-build commands below after satisfying
+all dependencies; ARM64/RISC-V status is unchanged.
 
 ## USB discovery and access
 

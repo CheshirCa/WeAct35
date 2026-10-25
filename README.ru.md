@@ -6,10 +6,11 @@ WeAct35 — C-библиотека и набор программ командн
 
 ## Платформы и статус релизов
 
-- **ARM64:** Orange Pi 3 LTS, Debian 13; проверенная packaged revision — `1.0.0-2`.
+- **AMD64:** Debian 13 x86-64; сборка, пакеты 1.0.0-3 и отдельные аппаратные сценарии FS35/FS096 проверены локально. AMD64 assets подготовлены локально и ожидают добавления в существующий GitHub Release.
+- **ARM64:** Orange Pi 3 LTS, Debian 13; проверенная packaged revision — `1.0.0-3`.
 - **riscv64:** Orange Pi RV2, Ubuntu 24.04.5 LTS; установленная и аппаратно smoke-проверенная revision — `1.0.0-3` upstream `1.0.0`.
 
-RISC-V пакеты — отдельные GitHub Release assets с собственным `SHA256SUMS`; в исходное дерево они не коммитятся. Из RISC-V revision нельзя делать вывод о релизе ARM64 `1.0.0-3`.
+Пакеты архитектур публикуются отдельными Release assets с собственными checksum manifests; в исходное дерево они не коммитятся. Перед загрузкой проверьте наличие assets нужной архитектуры в существующем Release.
 
 ## Дисплеи
 
@@ -35,8 +36,8 @@ RISC-V пакеты — отдельные GitHub Release assets с собств
 
 ```sh
 cd Release/arm64
-sha256sum -c SHA256SUMS
-sudo apt install ./libweact1_1.0.0_arm64.deb ./libweact-dev_1.0.0_arm64.deb ./weactterm_1.0.0_arm64.deb
+sha256sum -c SHA256SUMS-arm64.txt
+sudo apt install ./libweact1_1.0.0-3_arm64.deb ./libweact-dev_1.0.0-3_arm64.deb ./weactterm_1.0.0-3_arm64.deb
 ```
 
 Найдите устройства без открытия порта:
@@ -77,7 +78,7 @@ LD_LIBRARY_PATH="$build/obj" "$build/bin/weact-cli" /?
 - English: [terminal](Doc/en/TERMINAL.md), [examples](Doc/en/EXAMPLES.md)
 
 Языковые каталоги содержат каноническую пользовательскую документацию.
-- [RISC-V 1.0.0-3 release notes](Doc/en/RELEASE-1.0.0-3.md)
+- [Release notes 1.0.0-3 и каталог пакетов архитектур](Doc/en/RELEASE-1.0.0-3.md)
 - [CDC ACM для Orange Pi RV2](Misc/README.ru.md)
 
 После установки пакетов доступны краткие английские man-страницы:
@@ -86,6 +87,13 @@ LD_LIBRARY_PATH="$build/obj" "$build/bin/weact-cli" /?
 
 ## Проверка и ограничения
 
-ARM64-пакеты 1.0.0 прошли offline regression и ASan/UBSan. Аппаратно подтверждены `/init`, региональные Code 128 и QR на FS35, полноэкранные Code 128 и QR на FS096. Это визуальные подтверждения; внешнее сканирование и побайтный захват физических LCD-пикселей не заявляются.
+Сборка AMD64 и offline-регрессия, включая ASan/UBSan, прошли; LSan не
+проверялся. На Debian 13 AMD64 пользователь подтвердил очистку FS35, текст, QR
+и QR в области; true overlay FS096 сохранил QR под крупным текстом, а первый
+fullscreen Code128 после переподключения прошёл в трёх попытках с новым
+кабелем. В одной из двух дополнительных попыток со старым кабелем наблюдалось
+смещение изображения; это наблюдение, а не установленный дефект ПО.
+Подтверждённые сценарии ARM64 и RISC-V приведены в release notes. Внешнее
+сканирование и побайтный захват LCD-пикселей не заявляются.
 
 Исходный набор содержит notices Expat/MIT, GPL-3.0-only, LGPL-2.1-or-later и BSD-3-Clause в `LICENSE` и `LICENSES/`. Публичное распространение всё ещё требует подтверждения владельцем прав на GPL-адаптацию.
