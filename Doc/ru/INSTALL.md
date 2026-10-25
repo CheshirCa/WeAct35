@@ -4,11 +4,12 @@
 
 ## Поддерживаемый релиз и платформа
 
-WeAct35 1.0.0-3 собран и проверен на Debian 13 `amd64`, Debian 13 `arm64` и
-Ubuntu 24.04.5 `riscv64`. AMD64-пакеты установлены, а отдельные аппаратные
-сценарии визуально подтверждены на Debian 13. Результаты ARM64 и RISC-V
-суммированы в release notes. Проверьте список assets существующего релиза:
-локально подготовленные AMD64-пакеты нельзя скачать, пока они туда не добавлены.
+Пакеты WeAct35 1.0.0-3 доступны для Debian 13 `amd64`, Debian 13 `arm64` и
+Ubuntu 24.04.5 `riscv64` в [опубликованном GitHub Release
+v1.0.0-3](https://github.com/CheshirCa/WeAct35/releases/tag/v1.0.0-3). Для
+каждой архитектуры доступны пять бинарных пакетов и отдельный SHA-256 manifest.
+AMD64-пакеты скачаны из Release и прошли проверку checksum; отдельные аппаратные
+сценарии визуально подтверждены на Debian 13.
 
 | Пакет | Назначение |
 |---|---|
@@ -48,10 +49,31 @@ man 3 libweact
 
 Ожидаются Debian package version `1.0.0-3`, архитектура `arm64` и
 pkg-config upstream API version `1.0.0`.
+
+## Установка AMD64-пакетов
+
+Скачайте пять AMD64-пакетов и `SHA256SUMS-amd64.txt` из [GitHub Release
+v1.0.0-3](https://github.com/CheshirCa/WeAct35/releases/tag/v1.0.0-3) в один
+каталог. Перед установкой проверьте весь набор:
+
+```sh
+sha256sum -c SHA256SUMS-amd64.txt
+sudo apt install ./libweact1_1.0.0-3_amd64.deb ./libweact-dev_1.0.0-3_amd64.deb ./weactterm_1.0.0-3_amd64.deb
+```
+
+Два пакета `-dbgsym` необязательны. `apt` разрешит runtime dependencies из
+настроенных репозиториев Debian 13. Проверьте установленную версию и архитектуру:
+
+```sh
+dpkg-query -W -f='${binary:Package} ${Version} ${Architecture} ${Status}\n' libweact1 libweact-dev weactterm
+```
+
+Ожидаются Debian package version `1.0.0-3` и архитектура `amd64`. Общий
+каталог пакетов и их checksum приведены в [release notes 1.0.0-3](RELEASE-1.0.0-3.md).
 `weactterm` устанавливает три program pages section 1; `libweact-dev` —
 library overview section 3. Полные двуязычные guides остаются в исходном
 каталоге документации.
-Основные пути: `/usr/bin/weact-cli`, `/usr/bin/weact-list`,
+На ARM64 основные пути: `/usr/bin/weact-cli`, `/usr/bin/weact-list`,
 `/usr/bin/weactterm`, `/usr/lib/aarch64-linux-gnu/libweact.so.1`,
 `/usr/include/weact/`, `/usr/lib/aarch64-linux-gnu/pkgconfig/weact.pc`.
 
@@ -65,7 +87,7 @@ sudo apt remove weactterm libweact-dev libweact1
 
 ## Статус RISC-V RV2
 
-На Orange Pi RV2 с Ubuntu 24.04.5 LTS установлен и аппаратно smoke-проверен набор `riscv64` revision `1.0.0-3` upstream `1.0.0`. Получайте все пять release assets вместе с `SHA256SUMS`, проверяйте их, затем устанавливайте три неотладочных `.deb` через `apt`. Пакеты ARM64 для Debian 13 также имеют revision `1.0.0-3`.
+На Orange Pi RV2 с Ubuntu 24.04.5 LTS установлен и аппаратно smoke-проверен набор `riscv64` revision `1.0.0-3` upstream `1.0.0`. Получайте пять release-пакетов вместе с `SHA256SUMS-riscv64.txt`, проверяйте их, затем устанавливайте три неотладочных `.deb` через `apt`. Пакеты ARM64 для Debian 13 также имеют revision `1.0.0-3`.
 
 См. [RISC-V release notes](RELEASE-1.0.0-3.md) и [заметку о CDC ACM RV2](../../Misc/README.ru.md).
 
@@ -89,8 +111,10 @@ QR в области. На FS096 true overlay сохранил QR при нал�
 первый fullscreen Code128 после cold-start прошёл в трёх попытках с новым
 USB-кабелем. В одной из двух дополнительных попыток со старым кабелем
 наблюдалось смещение изображения; это наблюдение не доказывает дефект ПО.
-Остальные аппаратные сценарии не подтверждены. AMD64-пакеты остаются локальными
-и ещё должны быть добавлены в assets существующего GitHub-релиза. Используйте
+Отдельный cold-start QR, обычный текст FS096 и другие аппаратные сценарии не
+подтверждены. AMD64-пакеты доступны в опубликованном [GitHub Release
+v1.0.0-3](https://github.com/CheshirCa/WeAct35/releases/tag/v1.0.0-3);
+проверяйте их через `SHA256SUMS-amd64.txt`, как описано выше. Используйте
 существующие команды сборки ниже; статус ARM64/RISC-V не меняется.
 
 ## Поиск USB и права

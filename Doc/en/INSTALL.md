@@ -4,12 +4,12 @@
 
 ## Supported release and platform
 
-WeAct35 1.0.0-3 has been built and checked on Debian 13 `amd64`, Debian 13
-`arm64`, and Ubuntu 24.04.5 `riscv64`. AMD64 packages were installed and
-selected hardware scenarios were visually confirmed on Debian 13. ARM64 and
-RISC-V evidence is summarized in the release notes. Check the existing
-release asset list for the package files available for download; locally
-prepared AMD64 artifacts are not downloadable until added there.
+WeAct35 1.0.0-3 packages are available for Debian 13 `amd64`, Debian 13
+`arm64`, and Ubuntu 24.04.5 `riscv64` in the [published GitHub Release
+v1.0.0-3](https://github.com/CheshirCa/WeAct35/releases/tag/v1.0.0-3). Each
+architecture has five binary packages and a separate SHA-256 manifest. The
+AMD64 packages were downloaded from the Release and passed checksum
+verification; selected hardware scenarios were visually confirmed on Debian 13.
 
 The packages are:
 
@@ -53,11 +53,34 @@ man 3 libweact
 Expected Debian package version is `1.0.0-3`, architecture is `arm64`, and
 pkg-config reports upstream API version `1.0.0`.
 
+## Install the AMD64 packages
+
+Download the five AMD64 packages and `SHA256SUMS-amd64.txt` from [GitHub
+Release v1.0.0-3](https://github.com/CheshirCa/WeAct35/releases/tag/v1.0.0-3)
+into one directory. Verify the complete set before installing:
+
+```sh
+sha256sum -c SHA256SUMS-amd64.txt
+sudo apt install ./libweact1_1.0.0-3_amd64.deb ./libweact-dev_1.0.0-3_amd64.deb ./weactterm_1.0.0-3_amd64.deb
+```
+
+The two `-dbgsym` packages are optional. `apt` resolves runtime dependencies
+from the configured Debian 13 repositories. Check the installed package
+version and architecture with:
+
+```sh
+dpkg-query -W -f='${binary:Package} ${Version} ${Architecture} ${Status}\n' libweact1 libweact-dev weactterm
+```
+
+Expected values are Debian package version `1.0.0-3` and architecture
+`amd64`. For the shared release catalog and package checksums, see the
+[1.0.0-3 release notes](RELEASE-1.0.0-3.md).
+
 `weactterm` installs the three section-1 program pages; `libweact-dev`
 installs the section-3 library overview. Full bilingual guides remain in the
 source/documentation tree.
 
-Installed paths include `/usr/bin/weact-cli`, `/usr/bin/weact-list`,
+On ARM64, installed paths include `/usr/bin/weact-cli`, `/usr/bin/weact-list`,
 `/usr/bin/weactterm`, `/usr/lib/aarch64-linux-gnu/libweact.so.1`,
 `/usr/include/weact/`, and
 `/usr/lib/aarch64-linux-gnu/pkgconfig/weact.pc`.
@@ -72,7 +95,7 @@ Review the proposed package transaction before confirming it.
 
 ## RISC-V RV2 package status
 
-Orange Pi RV2 with Ubuntu 24.04.5 LTS has an installed, hardware-smoke-tested `riscv64` package revision `1.0.0-3` of upstream `1.0.0`. Obtain its five release assets and `SHA256SUMS` together, verify them, then install the three non-debug `.deb` files with `apt`. ARM64 Debian 13 packages are also revision `1.0.0-3`.
+Orange Pi RV2 with Ubuntu 24.04.5 LTS has an installed, hardware-smoke-tested `riscv64` package revision `1.0.0-3` of upstream `1.0.0`. Obtain its five release packages and `SHA256SUMS-riscv64.txt` together, verify them, then install the three non-debug `.deb` files with `apt`. ARM64 Debian 13 packages are also revision `1.0.0-3`.
 
 See [RISC-V release notes](RELEASE-1.0.0-3.md) and the [RV2 CDC ACM note](../../Misc/README.md).
 
@@ -97,9 +120,11 @@ QR while large text was drawn over it; fullscreen Code128 passed its first
 cold-start after reconnect in three attempts with a new USB cable. One of two
 extra attempts with an older cable showed image shift; this observation does
 not establish a software defect. Other hardware scenarios remain unconfirmed.
-The AMD64 packages are local and still need to be added to the existing GitHub
-release assets. Use the existing source-build commands below after satisfying
-all dependencies; ARM64/RISC-V status is unchanged.
+The AMD64 packages are available in the published [GitHub Release
+v1.0.0-3](https://github.com/CheshirCa/WeAct35/releases/tag/v1.0.0-3); verify
+them with `SHA256SUMS-amd64.txt` as described above. Use the existing
+source-build commands below after satisfying all dependencies; ARM64/RISC-V
+status is unchanged.
 
 ## USB discovery and access
 

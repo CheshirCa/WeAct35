@@ -1,10 +1,10 @@
 # WeAct35 1.0.0-3 — release notes
 
-Этот документ описывает native Debian packages для Debian 13 `amd64`, Debian 13
-`arm64` и Orange Pi RV2 / Ubuntu 24.04.5 LTS `riscv64`. Набор AMD64 и
-дополнение ниже подготовлены локально; они не входят в опубликованный GitHub
-Release, пока его assets не обновлены. Документ не переписывает исторические
-теги и не заменяет ранее опубликованные файлы.
+GitHub Release [v1.0.0-3](https://github.com/CheshirCa/WeAct35/releases/tag/v1.0.0-3)
+содержит native Debian packages для Debian 13 `amd64`, Debian 13 `arm64` и
+Orange Pi RV2 / Ubuntu 24.04.5 LTS `riscv64`: по пять пакетов и одному checksum
+manifest для каждой архитектуры, всего 18 assets. AMD64-файлы скачаны из
+Release и прошли SHA-256. Версии пакетов и исторический тег не изменены.
 
 ## Основное
 
@@ -19,13 +19,11 @@ Release, пока его assets не обновлены. Документ не �
 - Community-модуль CDC ACM для RV2 не распространяется. См.
   [заметку RV2](../../Misc/README.ru.md).
 
-Получайте пять artifacts и соответствующий checksum asset только для
-**одной** архитектуры. Используйте manifest соответствующей архитектуры.
-Имеющиеся upload-копии
-называются `SHA256SUMS-arm64.txt` и `SHA256SUMS-riscv64.txt`; предлагаемое имя
-для AMD64 — `SHA256SUMS-amd64.txt`. Проверяйте набор командой
-`sha256sum -c <manifest>`. В исходных каталогах пакетов manifests сохраняют
-свои имена. Бинарные пакеты относятся к Release assets, не к Git.
+Скачивайте пять пакетов и checksum asset только для **одной** архитектуры из
+[Release](https://github.com/CheshirCa/WeAct35/releases/tag/v1.0.0-3). Имена
+manifest: `SHA256SUMS-arm64.txt`, `SHA256SUMS-riscv64.txt` и
+`SHA256SUMS-amd64.txt`. Проверьте набор командой `sha256sum -c <manifest>`.
+Бинарные пакеты относятся к Release assets, не к Git.
 
 ## ARM64 assets — Debian 13
 
@@ -58,13 +56,13 @@ success остаётся visual/manual evidence; external barcode scanning,
 побайтный LCD capture и расширенные reconnect matrices не заявляются.
 
 
-## Дополнение AMD64 — локальная проверка пакетов и оборудования; публикация ожидается
+## AMD64-пакеты — Debian 13 x86-64
 
 Пять бинарных пакетов AMD64 собраны для Debian 13 и прошли локальные проверки
-checksum, lintian, ABI, dependencies и содержимого пакетов. Пользователь затем
-подтвердил установку `libweact1`, `libweact-dev` и `weactterm`. ABI сохранён:
-SONAME `libweact.so.1`, 79 экспортов, upstream API `1.0.0`. Это не означает,
-что assets уже загружены.
+checksum, lintian, ABI и dependencies. Пользователь подтвердил установку
+`libweact1`, `libweact-dev` и `weactterm`; затем опубликованные файлы были
+скачаны из Release и прошли проверку SHA-256. ABI сохранён: SONAME
+`libweact.so.1`, 79 экспортов, upstream API `1.0.0`.
 
 | Файл | SHA-256 |
 |---|---|
@@ -83,7 +81,6 @@ USB-кабелем. В одной из двух дополнительных п�
 не подтверждены. Точные аппаратные команды и exit codes не предоставлены.
 
 Два AMD64 debug-symbol файла сохраняют штатное расширение Debian `.deb`.
-Checksum manifest — шестой предлагаемый asset с именем
-`SHA256SUMS-amd64.txt`. Загрузить все шесть файлов можно после проверки
-локального отчёта и подтверждения целевого существующего Release; существующие
-assets не перезаписывать и не удалять.
+Шестой AMD64 asset — `SHA256SUMS-amd64.txt`. Скачайте его вместе с пятью
+AMD64-пакетами и проверьте набор командой `sha256sum -c SHA256SUMS-amd64.txt`.
+Файлы AMD64 debug symbols сохраняют штатное расширение Debian `.deb`.
