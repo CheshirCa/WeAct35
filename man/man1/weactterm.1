@@ -1,0 +1,77 @@
+.TH WEACTTERM 1 "October 2026" "WeAct35 1.0.0" "User Commands"
+.SH NAME
+weactterm \- foreground FS35 PTY terminal using libvterm and FreeType
+.SH SYNOPSIS
+.B weactterm
+.RB [ --dry-run | --run ]
+.RI [ options ]
+.SH DESCRIPTION
+weactterm runs a shell or command in a PTY, lets libvterm own the current
+terminal screen, and rasterises it with FreeType on FS35.  It supports FS35
+only, not FS096.  No argument is a finite memory-only demonstration; --run is
+the only mode that opens USB and performs full managed FS35 initialisation
+(orientation 02 and black clear).
+.SH OPTIONS
+.TP
+.B --dry-run
+Memory-only PTY mode; no device is opened.
+.TP
+.B --run
+Guarded FS35 hardware mode.  Without --command it starts interactive $SHELL,
+falling back to /bin/sh.
+.TP
+.BI --command " CMD"
+Run /bin/sh -c CMD in the child PTY.
+.TP
+.BI --device " PATH"
+Choose an absolute matching CDC ACM/by-id path.
+.TP
+.BI --serial " SERIAL"
+Require a matching USB serial.
+.TP
+.B --allow-unknown-occupancy
+Limited permission-only occupancy override after identity checks; known busy,
+identity, namespace and scanner failures remain fatal.
+.TP
+.B --ctrl-c-to-pty
+Forward Ctrl+C to the PTY.  Otherwise Ctrl+C exits; Ctrl+] always exits.
+.TP
+.B --perf-stats
+Print host PTY, rendering and transfer counters on exit, not LCD latency.
+.TP
+.BI --font-size " tiny|small|normal|large|xlarge"
+Select fixed DejaVu Sans Mono grids: tiny 96x32, small 80x26, normal 60x20
+(default), large 40x13, xlarge 30x10.
+.TP
+.B --compression off|fastlz
+Default off.  FastLZ is explicit FS35 presenter compression; no fallback follows
+a transport failure.
+.TP
+.BI --brightness " 0..50"
+Set FS35 backlight after successful init; omission leaves it unchanged.
+.TP
+.BI --brightness-fade-ms " 0..65535"
+Requires --brightness.  Effective fade is capped at 5000 ms.
+.SH TERMINAL OPERATION
+The child receives TERM=xterm and LC_ALL=C.UTF-8.  UTF-8, cursor and supported
+control sequences are handled by libvterm.  Enter, Backspace, Tab, arrows,
+Home/End, Insert/Delete, Page Up/Down and F1 through F4 are mapped; unknown
+escape sequences are forwarded.  There is no scrollback UI, mouse protocol,
+runtime font selection or promise of a complete desktop terminal emulator.
+Frames are coalesced and capped at 20 fps; changed terminal tiles may be sent
+as regions, while first/costly changes are full frames.
+.SH TERMINATION
+Terminal attributes are restored.  The child/foreground group receives SIGHUP
+on closure and is eventually killed if it does not exit.  Child normal status
+is returned; Ctrl+] gives 130, handled signals give 128 plus signal, and
+internal/render/USB failures give 2.  Disconnects stop rather than reconnect.
+.SH EXAMPLES
+.EX
+weactterm --dry-run --command "printf 'preview\\n'" --font-size large
+weactterm --run --device /dev/serial/by-id/usb-WeAct_Studio_Display_FS_V1_YOUR_ID-if00 \
+  --command 'uname -a; sleep 2'
+.EE
+.SH SEE ALSO
+.BR weact-list (1),
+.BR weact-cli (1),
+.BR libweact (3)

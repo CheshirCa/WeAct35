@@ -1,0 +1,27 @@
+WeAct35 — Debian package notes
+===============================
+
+The package installs `weact-cli`, `weact-list`, `weactterm`, and the shared
+library `libweact.so.1`.  `weact-list` reads sysfs metadata only and never
+opens a display.  `weactterm` is dry-run by default; its `--run` option is an
+explicit request for hardware access.
+
+For `weact-cli`, use a stable `/dev/serial/by-id/...` path and confirm the
+display identity and port ownership before an operation.  FS35 after power-on
+is normally prepared with `/init`; that full-screen command selects verified
+orientation 02 and clears black.  Then FS35 regional QR/Barcode commands with
+`/x /y /w /h` update only their requested rectangle.  See the installed
+`CLI.md` and `HARDWARE.md` for syntax and safety limits.
+
+The packages neither install a daemon nor open a USB display during package
+installation/removal.  Hardware access needs a suitable CDC ACM device,
+permissions (normally the `dialout` group), a verified USB product and no
+visible competing port owner.  The udev rule provides a by-path FS35 symlink;
+it does not choose a device automatically.
+
+Licensing: the library and most support code are MIT/Expat.  The Linux
+WeActCLI adaptation is GPL-3.0-only; its complete standard license is in
+`/usr/share/common-licenses/GPL-3`.  QR encoding is dynamically linked from
+Debian `libqrencode4` under LGPL-2.1-or-later and is not included in the
+package source.  Retained Code 128/Code 39 tables carry their BSD-3-Clause
+notice.  See `debian/copyright` for the complete package classification.

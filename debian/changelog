@@ -1,0 +1,84 @@
+weactterm (1.0.0-2) unstable; urgency=medium
+
+  * Rebuild the public ARM64 source distribution with portable FS35 selection:
+    do not pin the guarded connector to one USB serial, while retaining strict
+    VID:PID, manufacturer, Product, CDC ACM and occupancy checks.
+  * Include the self-contained public display header, bilingual guides, manual
+    pages, and updated source/third-party attribution notices.
+
+ -- WeAct35 Local Build <weactterm@example.invalid>  Sun, 25 Oct 2026 14:00:00 +0300
+
+weactterm (1.0.0-1) unstable; urgency=medium
+
+  * Add full Linux manual pages for weact-cli, weact-list, weactterm and
+    the libweact development API overview.
+
+ -- WeAct35 Local Build <weactterm@example.invalid>  Sun, 25 Oct 2026 13:00:00 +0300
+
+weactterm (1.0.0) unstable; urgency=medium
+
+  * Prepare the public ARM64 release from the standalone source export.
+  * Include FS35 QR and Barcode region positioning with preserved outside pixels.
+  * Accept FS35 preserve orientation 02 and 03; retain full-init and FS096 behavior.
+  * Include the standalone FS35 /init operation for orientation 02 and black clear.
+
+ -- WeAct35 Local Build <weactterm@example.invalid>  Sun, 25 Oct 2026 12:00:00 +0300
+
+weactterm (0.7.0~stage7.9) unstable; urgency=medium
+
+  * Ship the hardware-tested QR and Barcode CLI modes from Stage 7.8.
+  * Depend explicitly on libqrencode4 and retain the frozen library ABI.
+
+ -- WeAct35 Local Build <weactterm@example.invalid>  Sat, 24 Oct 2026 04:00:00 +0300
+
+weactterm (0.7.0~stage7.7) unstable; urgency=medium
+
+  * Package the hardware-tested CLI scroll fix and explicit FS35 FastLZ mode.
+  * Document transport-limited actual speed; preserve defaults and shared ABI.
+
+ -- WeAct35 Local Build <weactterm@example.invalid>  Sat, 24 Oct 2026 03:00:00 +0300
+
+weactterm (0.7.0~stage7.6) unstable; urgency=medium
+
+  * Ship current CLI sparse scroll updates, frame-cost fallback and cadence fix.
+  * Include optional --scroll-stats; preserve library ABI and hardware behavior.
+
+ -- WeAct35 Local Build <weactterm@example.invalid>  Sat, 24 Oct 2026 01:00:00 +0300
+
+weactterm (0.7.0~stage7.5) unstable; urgency=medium
+
+  * Add Linux WeActCLI adaptation, image/text rendering and guarded connections.
+  * Add a public Bitmap region function for sparse overlay; preserve SONAME.
+
+ -- WeAct35 Local Build <weactterm@example.invalid>  Thu, 22 Oct 2026 21:51:13 +0300
+
+weactterm (0.7.0~stage7.4) unstable; urgency=medium
+
+  * Add read-only weact-list USB display inventory and offline fixtures.
+
+ -- WeAct35 Local Build <weactterm@example.invalid>  Thu, 22 Oct 2026 21:26:30 +0300
+
+weactterm (0.7.0~stage7.2) unstable; urgency=medium
+
+  * Introduce shared graphics library and development package.
+
+ -- WeAct35 Local Build <weactterm@example.invalid>  Thu, 22 Oct 2026 20:56:13 +0300
+
+weactterm (0.6.0~stage6.1) unstable; urgency=medium
+
+  * Stage 6.1 package from current Stage 4.1/4.3/6 sources.
+  * Ship the guarded, default-dry-run FS35 feature diagnostic and its manual.
+  * Independent MIT level-1 encoder; no new runtime dependencies.
+  * Record user hardware validation on FS35 V1.0.0.1; keep compression off
+    and leave brightness unchanged by default.
+  * Preserve one Architecture:any recipe, including amd64 source builds.
+
+ -- WeAct35 Local Build <weactterm@example.invalid>  Thu, 22 Oct 2026 18:00:00 +0300
+
+weactterm (0.5.0~stage5.1) unstable; urgency=medium
+
+  * Stage 5 development package from Stage 4.3 plus portable USB selection.
+  * Support common source builds for arm64, armhf and riscv64.
+  * This prerelease is not a stable or hardware-qualified release.
+
+ -- WeAct35 Local Build <weactterm@example.invalid>  Thu, 22 Oct 2026 12:00:00 +0300

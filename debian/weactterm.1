@@ -1,0 +1,62 @@
+.TH WEACTTERM 1 "October 2026" "0.6.0~stage6.1" "User Commands"
+.SH NAME
+weactterm \- PTY text terminal for WeAct FS35 USB displays
+.SH SYNOPSIS
+.B weactterm
+.RI [ options ]
+.SH DESCRIPTION
+Runs a shell or command in a PTY using libvterm and FreeType.
+Defaults to a finite memory-only demonstration. Display access requires
+.BR --run .
+.SH OPTIONS
+.TP
+.B --help
+Show usage.
+.TP
+.B --dry-run
+Run without opening a display (default).
+.TP
+.B --run
+Explicitly initialize and clear the physical FS35, then run the terminal.
+.TP
+.BI --device " PATH"
+Select a specific matching CDC ACM device or udev alias.
+.TP
+.BI --serial " SERIAL"
+Require this serial number. Multiple matches are rejected.
+.TP
+.B --allow-unknown-occupancy
+Allow only foreign-process permission failures in occupancy scanning.
+.TP
+.BI --command " COMMAND"
+Run /bin/sh -c COMMAND instead of the interactive shell.
+.TP
+.BI --font-size " tiny|small|normal|large|xlarge"
+Choose startup cell size. Default normal is 60 by 20; tiny is 96 by 32.
+.TP
+.B --ctrl-c-to-pty
+Forward Ctrl+C instead of exiting. Ctrl+] always exits.
+.TP
+.B --perf-stats
+Print host performance statistics to stderr on exit, not LCD latency.
+.TP
+.BI --compression " off|fastlz"
+Default off uses the existing Bitmap 05 path. Opt-in fastlz uses command15.
+FastLZ was user-tested on FS35 firmware V1.0.0.1; select it explicitly.
+There is no fallback after TX failure. Other firmware is not qualified.
+.TP
+.BI --brightness " 0..50"
+Set backlight in percent after successful init. Omission leaves it unchanged.
+.TP
+.BI --brightness-fade-ms " 0..65535"
+Requires brightness. Default1000ms; effective duration capped at5000ms.
+.SH FILES
+.I /usr/share/fonts/truetype/dejavu/DejaVuSansMono.ttf
+.br
+.I /dev/weact-fs35/by-path/
+.SH LIMITATIONS
+Only FS35 orientation 2, 480 by 320, RGB565 little-endian. No automatic
+reconnect, daemon, full Unicode shaping or runtime font resizing.
+.SH SEE ALSO
+.BR sh (1),
+.BR udev (7)

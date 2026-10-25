@@ -1,0 +1,75 @@
+Format: https://www.debian.org/doc/packaging-manuals/copyright-format/1.0/
+Upstream-Name: WeAct Display Tools / weactterm
+Source: https://t.me/cheshircanest
+
+Files: *
+Copyright: 2025 WeAct Display Tools Contributors
+           2026 CheshirCa https://t.me/cheshircanest
+License: Expat
+Comment: Includes the independent MIT FastLZ level-1 encoder by CheshirCa.
+ No upstream FastLZ implementation or GPL Python client is included.
+ External FreeType and font credits are provided in README.Debian.
+
+Files: Source/tools/weact_cli* debian/weact-cli.1 LICENSES/GPL-3.0-only.txt
+Copyright: 2026 CheshirCa https://t.me/cheshircanest
+License: GPL-3
+Comment: Linux adaptation of the project owner's GPL-3.0 PureBasic WeActCLI.
+ The project owner states that the original PureBasic project and all own C
+ code were created for this project. The graphics library remains MIT.
+
+Files: Source/weact_codes.c Include/weact_codes.h Source/codes/render.c Source/codes/render.h Source/codes/linear_tables.h Source/codes/qrencode_abi.h Source/tools/weact_cli_codes.c
+Copyright: 2026 CheshirCa https://t.me/cheshircanest
+License: Expat
+Comment: Local encoder/renderer logic is MIT-compatible Expat. Retained
+ Zint-derived run-width tables are BSD-3-Clause and qrencode declarations
+ retain the LGPL-2.1-or-later notice; no foreign implementation is statically
+ copied. The QR backend is dynamically linked Debian libqrencode4.
+
+Files: LICENSES/LGPL-2.1-or-later.txt
+Copyright: 1991, 1999 Free Software Foundation, Inc.
+License: LGPL-2.1+
+
+Files: LICENSES/BSD-3-Clause-Zint.txt
+Copyright: 2008-2025 Robin Stuart
+License: BSD-3-Clause
+
+License: GPL-3
+ This program is free software: you can redistribute it and/or modify
+ it under the terms of the GNU General Public License version 3.
+ On Debian systems the complete license is in
+ /usr/share/common-licenses/GPL-3.
+
+License: Expat
+ Permission is hereby granted, free of charge, to any person obtaining a copy
+ of this software and associated documentation files (the "Software"), to deal
+ in the Software without restriction, including without limitation the rights
+ to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ copies of the Software, and to permit persons to whom the Software is
+ furnished to do so, subject to the following conditions:
+ .
+ The above copyright notice and this permission notice shall be included in all
+ copies or substantial portions of the Software.
+ .
+ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+ SOFTWARE.
+ .
+ ---
+ .
+ Original WeAct Display protocol implementation and Linux/C port/extensions
+ are project work by CheshirCa / WeAct Display Tools Contributors.
+
+License: LGPL-2.1+
+ The QR backend is dynamically linked from Debian libqrencode4. The complete
+ LGPL-2.1-or-later text is included in LICENSES/LGPL-2.1-or-later.txt. The
+ libqrencode implementation is not included in this package.
+
+License: BSD-3-Clause
+ The retained Code 128/Code 39 tables are derived from Zint 2.15.0; the
+ complete upstream notice is preserved in Source/codes/linear_tables.h and
+ LICENSES/BSD-3-Clause-Zint.txt.
+ The Zint library itself is not linked or included.

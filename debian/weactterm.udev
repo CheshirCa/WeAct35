@@ -1,0 +1,10 @@
+# Copyright (C) CheshirCa 2026   https://t.me/cheshircanest
+# Match USB identity and interface driver in separate parent walks.
+SUBSYSTEM!="tty", GOTO="weactterm_end"
+KERNEL!="ttyACM[0-9]*", GOTO="weactterm_end"
+ATTRS{idVendor}=="1a86", ATTRS{idProduct}=="fe0c", ATTRS{manufacturer}=="WeAct Studio", ATTRS{product}=="Display FS V1", ENV{WEACT_FS35}="1"
+ENV{WEACT_FS35}!="1", GOTO="weactterm_end"
+DRIVERS=="cdc_acm", IMPORT{builtin}="path_id"
+DRIVERS=="cdc_acm", GROUP="dialout", MODE="0660"
+DRIVERS=="cdc_acm", ENV{ID_PATH}=="?*", SYMLINK+="weact-fs35/by-path/$env{ID_PATH}"
+LABEL="weactterm_end"

@@ -1,0 +1,39 @@
+#!/usr/bin/make -f
+# Copyright (C) CheshirCa 2026   https://t.me/cheshircanest
+include /usr/share/dpkg/architecture.mk
+export DEB_BUILD_MAINT_OPTIONS = hardening=+all reproducible=+all
+export DEB_CFLAGS_MAINT_APPEND = -Wall -Wextra -Werror -std=c11
+DPKG_EXPORT_BUILDFLAGS = 1
+include /usr/share/dpkg/buildflags.mk
+BUILDDIR = $(CURDIR)/debian/build
+BINDIR = $(BUILDDIR)/bin
+BUILD_ARGS = CC=$(DEB_HOST_GNU_TYPE)-gcc AR=$(DEB_HOST_GNU_TYPE)-ar PKG_CONFIG=pkg-config BUILD_DIR=$(BUILDDIR)/obj BIN_DIR=$(BINDIR)
+%:
+	dh $@
+override_dh_auto_configure:
+	pkg-config --exact-version=0.3.3 vterm
+	pkg-config --exists freetype2
+override_dh_auto_build:
+	$(MAKE) $(BUILD_ARGS) all
+override_dh_auto_test:
+	@echo "Source distribution excludes test infrastructure; run project tests before release."
+override_dh_auto_install:
+	install -D -m755 $(BINDIR)/weact-cli debian/weactterm/usr/bin/weact-cli
+	ln -sf weact-cli debian/weactterm/usr/bin/WeActCLI
+	install -D -m755 $(BINDIR)/weact-list debian/weactterm/usr/bin/weact-list
+	install -D -m755 $(BINDIR)/weactterm debian/weactterm/usr/bin/weactterm
+	install -D -m755 $(BINDIR)/weact-fs35-features debian/weactterm/usr/bin/weact-fs35-features
+	install -d debian/libweact1/usr/lib/$(DEB_HOST_MULTIARCH) debian/libweact-dev/usr/lib/$(DEB_HOST_MULTIARCH)/pkgconfig debian/libweact-dev/usr/include/weact debian/libweact-dev/usr/share/doc/libweact-dev/examples
+	cp -a $(BUILDDIR)/obj/libweact.so.1* debian/libweact1/usr/lib/$(DEB_HOST_MULTIARCH)/
+	cp -a $(BUILDDIR)/obj/libweact.so debian/libweact-dev/usr/lib/$(DEB_HOST_MULTIARCH)/
+	cp $(BUILDDIR)/obj/libweact.a debian/libweact-dev/usr/lib/$(DEB_HOST_MULTIARCH)/
+	cp Include/weact_display.h Include/text_freetype.h Include/weact_extended.h Include/weact_init.h Include/weact_posix_init.h Include/weact_posix_transport.h Include/weact_memory_transport.h Include/weact_fs35.h Include/weact_graphics.h Include/weact_protocol.h Include/weact_fastlz.h debian/libweact-dev/usr/include/weact/
+	sed 's|@LIBDIR@|/usr/lib/$(DEB_HOST_MULTIARCH)|g' Source/weact.pc.in > debian/libweact-dev/usr/lib/$(DEB_HOST_MULTIARCH)/pkgconfig/weact.pc
+	cp Source/examples/graphics.c debian/libweact-dev/usr/share/doc/libweact-dev/examples/
+override_dh_installdocs:
+	dh_installdocs
+	install -d debian/weactterm/usr/share/doc/weactterm/en debian/weactterm/usr/share/doc/weactterm/ru
+	install -m644 Doc/en/*.md debian/weactterm/usr/share/doc/weactterm/en/
+	install -m644 Doc/ru/*.md debian/weactterm/usr/share/doc/weactterm/ru/
+override_dh_auto_clean:
+	rm -rf debian/build

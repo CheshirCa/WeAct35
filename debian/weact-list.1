@@ -1,0 +1,25 @@
+.\" Copyright (C) CheshirCa 2026   https://t.me/cheshircanest
+.TH WEACT-LIST 1 "October 2026" "WeAct Display Tools" "User Commands"
+.SH NAME
+weact-list \- list WeAct USB displays without opening serial ports
+.SH SYNOPSIS
+.B weact-list
+.RB [ --verbose | --help ]
+.SH DESCRIPTION
+Reads Linux sysfs tty metadata and resolves existing /dev/serial/by-id links.
+Models are selected by Product for VID:PID 1a86:fe0c: Display FS V1 is FS35,
+Display FS 0.96 Inch is FS096. Other products are listed as UNKNOWN.
+Serial and manufacturer are optional. Multiple units are listed in tty-name order.
+This is inventory, not permission to send commands or proof of hardware support.
+No serial node is opened, no display commands are sent, and sudo is unnecessary.
+.SH OPTIONS
+.TP
+.B --verbose
+Include sysfs, USB interface, driver and interface identifiers.
+.TP
+.B --help
+Print usage.
+.SH EXIT STATUS
+0 on success, including no devices; 1 on an incomplete scan or output error;
+2 for invalid arguments. Missing optional fields appear as a dash.
+Disconnected or stale links are skipped, with details in verbose mode.

@@ -1,0 +1,35 @@
+.TH WEACT-LIST 1 "October 2026" "WeAct35 1.0.0" "User Commands"
+.SH NAME
+weact-list \- list WeAct USB displays without opening serial ports
+.SH SYNOPSIS
+.B weact-list
+.RB [ --verbose | --help ]
+.SH DESCRIPTION
+weact-list reads Linux sysfs tty metadata and existing /dev/serial/by-id links.
+It does not open a serial node and sends no display commands.  For VID:PID
+1a86:fe0c, Product Display FS V1 is reported as FS35 and Display FS 0.96 Inch
+as FS096; another Product is reported as UNKNOWN.  Serial and manufacturer can
+be unavailable.  Devices are listed in tty-name order.
+.SH OPTIONS
+.TP
+.B --verbose
+Include sysfs, USB interface, driver and interface identifiers.
+.TP
+.B --help
+Print usage.
+.SH OUTPUT
+Output identifies tty, model, USB Product and available stable by-id path.
+Use the by-id path for later hardware commands.  Inventory is not permission
+to write and does not prove that a display is available for a guarded command.
+.SH EXAMPLES
+.EX
+weact-list
+weact-list --verbose
+.EE
+.SH EXIT STATUS
+0 means a completed scan, including no devices; 1 means incomplete scan or
+output error; 2 means invalid arguments.  Missing optional fields print as a
+dash.  Stale/disconnected links are skipped, with detail in verbose mode.
+.SH SEE ALSO
+.BR weact-cli (1),
+.BR weactterm (1)

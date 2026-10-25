@@ -1,0 +1,70 @@
+.\" Copyright (C) CheshirCa 2026   https://t.me/cheshircanest
+.TH WEACT-CLI 1 "October 2026" "WeAct Display Tools" "User Commands"
+.SH NAME
+weact-cli, WeActCLI \- display UTF-8 text and images on verified WeAct USB displays
+.SH SYNOPSIS
+.B WeActCLI
+/p:DEVICE [/v] [/c:COLOR] [/f:FONT:SIZE] [/s:SPEED[:u|d]] [/center]
+[/qr:DATA] [/barcode:code128|ean8|ean13|code39:DATA]
+[/x:X] [/y:Y] [/CLS] [/file:PATH] [/image:PATH[:MODE[:WxH]]]
+[/quality:VALUE] [--scroll-stats] [--scroll-compression off|fastlz] [text] [--serial SERIAL] [--allow-unknown-occupancy]
+.SH DESCRIPTION
+Linux adaptation of CheshirCa's PureBasic WeActCLI. The compatibility name
+WeActCLI is a symbolic link. Parameter names are case-insensitive and accept
+slash or single-dash prefixes. Use /? or /h for help.
+.PP
+/p:N selects /dev/ttyACMN; /p:/dev/ttyACM0 and explicit by-id paths also work.
+VID:PID 1a86:fe0c and exact USB Product identify FS35 or FS096; a serial filter
+is optional. Unknown USB-UARTs are rejected. No fallback port scan occurs.
+.PP
+Input priority is /CLS, image, UTF-8 file, text arguments, redirected stdin.
+Text supports literal backslash-n, wrapping, centering and font sizes 6..32.
+Fontconfig resolves system fonts, falling back to DejaVu Sans.
+Scrolling speed is pixels/second; u/up or d/down select one pass then clear.
+SIGINT/SIGTERM stop scrolling and close the connection.
+.PP
+/qr:DATA renders one centered QR Code. /barcode:FORMAT:DATA renders one
+centered Code 128, EAN-8, EAN-13 or basic Code 39 symbol. The QR data delimiter
+preserves later colons, so URLs are accepted. Code mode is exclusive with
+text, images, files, colors, fonts, coordinates and scrolling; it uses a white
+background, black modules, integer scale and required quiet zones. EAN input
+of 7 or 12 digits computes the final check digit; full EAN input is validated.
+QR uses UTF-8 byte mode with ECI and the system libqrencode. FS096 is limited
+by its 160x80 geometry; scanner support is not certified by this manual.
+.PP
+Text is packed once. Consecutive one-pixel positions are sent without skipping
+coordinates to catch up with blocked transfers. Actual speed may be lower than
+requested when the transport is slow. On the tested FS35 run, explicit FastLZ
+at 20 pixels/second produced visually smooth motion at 12.486 pixels/second.
+.PP
+--scroll-compression off|fastlz defaults to off. FastLZ is an explicit opt-in
+for FS35 scrolling text only; it is rejected for FS096, static text and images.
+--scroll-stats reports requested and actual speed, overruns, bytes, FPS,
+maximum step, and bounded latency percentiles/maxima. These are host timings,
+not panel commit latency. A transport failure never retries uncompressed.
+.PP
+Image modes: 0 fit proportionally; 1 top-left original size (oversized images
+are limited to screen dimensions); 2 centered, optionally resized.
+Quality fast/0 uses nearest sampling, normal/1 bilinear, high/2 bicubic;
+bw/bwfast uses nearest plus a threshold, bwhigh bicubic plus a threshold.
+PNG, JPEG, BMP and the first GIF frame use the system GdkPixbuf decoder.
+Alpha is composited over black. Dimensions are limited to 4096x4096,
+encoded images to 16 MiB, text to 256 KiB and file input to 1000 lines.
+Stdin acquisition has a five-second deadline and never reads an interactive tty.
+.PP
+/x or /y enable sparse solid-glyph overlay: only covered runs are sent,
+without clearing other pixels. Unknown-background antialiasing is unavailable.
+FS096 overlay assumes an already landscape display. Overlay with scrolling or
+images is rejected. The full CLI supports landscape geometry only.
+.PP
+--allow-unknown-occupancy accepts only foreign-process permission failures,
+like weactterm; busy ports, namespace failures and identity errors remain fatal.
+No experimental screen readback, sensors or WCX are implemented.
+The later PureBasic /model, /orientation, /brightness, /sensor and /fastlz
+extensions are rejected; the documented core syntax is supported.
+.SH EXIT STATUS
+0 success or help; 1 input/render/identity/transport failure; 2 invalid arguments;
+128 plus signal number when interrupted. A transport failure never reconnects.
+.SH LICENSE
+CLI adaptation: GPL-3.0-only, copyright CheshirCa 2026.
+The shared graphics library and legacy applications retain their MIT license.

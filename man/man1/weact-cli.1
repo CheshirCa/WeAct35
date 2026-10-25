@@ -1,0 +1,122 @@
+.TH WEACT-CLI 1 "October 2026" "WeAct35 1.0.0" "User Commands"
+.SH NAME
+weact-cli, WeActCLI \- display text, images and codes on verified WeAct USB displays
+.SH SYNOPSIS
+.B weact-cli
+.BI /p: PATH_OR_N
+.RI [ options ]
+.RI [ text ... ]
+.br
+.B weact-cli
+.BI /p: PATH_OR_N
+.B /init
+.br
+.B weact-cli
+.BI /p: PATH_OR_N
+.BI /qr: DATA
+.RI [ /x:X /y:Y /w:W /h:H ]
+.br
+.B weact-cli
+.BI /p: PATH_OR_N
+.BI /barcode: FORMAT:DATA
+.RI [ /x:X /y:Y /w:W /h:H ]
+.SH DESCRIPTION
+WeActCLI is the compatibility name for this program.  It writes only after
+identifying the selected USB CDC ACM display.  FS35 is Product
+.B Display FS V1
+(480 by 320, RGB565 little-endian); FS096 is Product
+.B Display FS 0.96 Inch
+(160 by 80, legacy BRG565/MSB).  Both use VID:PID 1a86:fe0c, so Product is
+also checked.  Prefer a stable path under /dev/serial/by-id.
+.SH OPTIONS
+.TP
+.B /p:N
+Select /dev/ttyACMN, where N is 0 through 999999.
+.TP
+.B /p:/dev/...
+Select an absolute device or by-id path.  A port is required for an operation.
+.TP
+.B --serial SERIAL
+Require the matching USB serial.
+.TP
+.B /v
+Write model/canvas diagnostics to standard error.
+.TP
+.B --allow-unknown-occupancy
+Accept only the limited foreign-process permission case after identity checks.
+It does not bypass a known busy port, an identity failure, or a scanner/
+namespace failure.
+.TP
+.B /?, /h, --help
+Show usage without device access.
+.SH TEXT AND IMAGE
+Text is UTF-8 from, in priority order, /CLS, image, file, literal arguments,
+or redirected stdin.  Literal arguments are joined by spaces.
+.TP
+.B /c:COLOR
+Text colour: red, green, blue, white, black, yellow, cyan, or magenta.
+.TP
+.B /f:FONT[:SIZE]
+Fontconfig request; size is 6 through 32, with DejaVu Sans fallback.
+.TP
+.B /center
+Centre text or code.
+.TP
+.B /x:X /y:Y
+For text, either coordinate enables sparse solid-glyph overlay.  It preserves
+other pixels and cannot be combined with image or scrolling.
+.TP
+.B /CLS
+Send a black clear frame.
+.TP
+.B /file:PATH
+Read bounded UTF-8 regular-file input.
+.TP
+.B /image:PATH[:MODE[:WxH]]
+Use PNG, JPEG, BMP, or first GIF frame.  Mode 0 fits, 1 is top-left, and 2 is
+centred.  /quality accepts fast, normal, high, bw, bwfast, bwhigh, 0, 1, or 2.
+.TP
+.B /s:SPEED[:u|d]
+One scrolling pass at pixels per second; it then clears.  Direction defaults
+up.  --scroll-stats reports host measurements.  --scroll-compression off|fastlz
+is explicit FS35 scrolling-only compression and defaults to off.
+.SH INITIALISATION AND CODES
+.B /init
+is standalone and FS35-only.  It sets orientation 02, validates it, and clears
+the entire screen black.  It does not reset or change brightness.  Use it after
+FS35 power-on, but not between regional updates.
+.PP
+.B /qr:DATA
+uses strict UTF-8, ECI 26 and ECC M.  A barcode is
+.B /barcode:code128|ean8|ean13|code39:DATA .
+Code 128 is ASCII; Code 39 uses its basic uppercase alphabet without *; EAN-8
+accepts 7/8 digits and EAN-13 12/13 digits with checksum computation/validation.
+Code mode is exclusive with text, images, clear, colour, font, quality and
+scrolling.  It uses black modules on white, integer scaling and quiet zones;
+no-fit is rejected rather than clipped.
+.PP
+For FS35, add all four /x:X /y:Y /w:W /h:H values to render a code in one
+rectangle.  The rectangle must fit 480 by 320 including quiet zones; only that
+rectangle is transmitted and unknown pixels outside it are not read.  FS096
+codes are fullscreen only; regional parameters are rejected before opening it.
+FS096 must already be landscape for code mode.
+.SH EXAMPLES
+.EX
+weact-list --verbose
+weact-cli /p:/dev/serial/by-id/usb-WeAct_Studio_Display_FS_V1_YOUR_ID-if00 /init
+weact-cli /p:/dev/serial/by-id/usb-WeAct_Studio_Display_FS_V1_YOUR_ID-if00 \
+  '/barcode:code128:ABC123' /x:220 /y:80 /w:240 /h:100
+weact-cli /p:/dev/serial/by-id/usb-WeAct_Studio_Display_FS_V1_YOUR_ID-if00 \
+  '/qr:https://example.com' /x:40 /y:40 /w:160 /h:160
+.EE
+.SH EXIT STATUS
+0 is success/help; 1 is input, rendering, identification, connection,
+transport or cleanup failure; 2 is invalid arguments; 128 plus a signal is an
+interrupted hardware operation.  Read stderr for guard and transport detail.
+.SH DIAGNOSTICS
+Do not retry a partial transfer or run this program and weactterm on one port
+at the same time.  A guarded connection failure has no fallback port scan.
+.SH SEE ALSO
+.BR weact-list (1),
+.BR weactterm (1),
+.BR libweact (3)

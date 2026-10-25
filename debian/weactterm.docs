@@ -1,0 +1,13 @@
+debian/README.Debian
+LICENSE
+LICENSES/README.md
+LICENSES/GPL-3.0-only.txt
+LICENSES/LGPL-2.1-or-later.txt
+LICENSES/BSD-3-Clause-Zint.txt
+debian/SOURCE_VERSION
+Doc/README.md
+Doc/INSTALL.md
+Doc/CLI.md
+Doc/TERMINAL.md
+Doc/API.md
+Doc/HARDWARE.md

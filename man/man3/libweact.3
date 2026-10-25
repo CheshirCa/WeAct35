@@ -1,0 +1,45 @@
+.TH LIBWEACT 3 "October 2026" "WeAct35 1.0.0" "Library Functions Manual"
+.SH NAME
+libweact \- C graphics, transport and guarded FS35 library
+.SH SYNOPSIS
+.nf
+#include <weact/weact_extended.h>
+#include <weact/weact_graphics.h>
+cc app.c $(pkg-config --cflags --libs weact) -o app
+.fi
+.SH DESCRIPTION
+libweact.so.1 provides legacy FS096 framebuffer functions and additive wx_*
+surfaces, devices, protocol encoders, transports and managed FS35 setup.
+Install libweact-dev for headers, static library and weact.pc.  The 1.0.0 ABI
+has SONAME libweact.so.1 and 79 exports.
+.PP
+New code normally creates an explicit wx_surface_t or wx_device_t with an
+explicit model and pixel format.  WX_FS096 is 160 by 80 legacy BRG565/MSB;
+WX_FS35 is 480 by 320 RGB565 little-endian in landscape.  A surface is host
+memory.  wx_device_bitmap sends its full canvas; wx_device_bitmap_region sends
+a strict canvas rectangle.
+.SH LIFECYCLE AND ERRORS
+Factory objects returned through out parameters are caller-owned: destroy
+surfaces with wx_surface_destroy, devices with wx_device_destroy, and POSIX
+transport with wx_posix_transport_destroy.  Borrowed canvas/pixel pointers are
+not freed by callers.  wx_status_t reports API failures.  Managed FS35 setup
+reports detailed stage/reason/errno in wx_init_report_t.
+.PP
+wx_posix_init_connector_select creates the guarded FS35 connector.  Then
+wx_device_init performs orientation 02 confirmation and black full Fill;
+wx_device_init_preserve followed by wx_device_confirm_orientation avoids a
+setter/Fill and accepts confirmed landscape 02 or 03.  Failed transfers seal
+the stream: do not retry a partial command or automatically reconnect.
+.SH HARDWARE SAFETY
+Both models share VID:PID 1a86:fe0c.  Verify exact Product, stable by-id path,
+permissions and port ownership.  The low-level POSIX transport itself does not
+perform these guards; use the managed guarded connector where appropriate.
+.SH COMPATIBILITY
+The legacy public weact_display_t ABI remains available.  Use its BRG565
+functions only for its legacy profile.  QR/barcode planning and CLI syntax are
+not a public libweact C API.
+.SH SEE ALSO
+The complete function, type and ownership reference is installed/source
+documentation API.md.  See also
+.BR weact-cli (1),
+.BR weactterm (1)

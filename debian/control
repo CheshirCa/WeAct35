@@ -1,0 +1,33 @@
+Source: weactterm
+Section: utils
+Priority: optional
+Maintainer: WeAct35 Local Build <weactterm@example.invalid>
+Build-Depends: debhelper-compat (= 13), gcc, make, pkg-config, libvterm-dev (>= 0.3.3), libfreetype-dev, libgdk-pixbuf-2.0-0 (>= 2.42), libglib2.0-0t64, libqrencode4 (>= 4.1.1), fontconfig, python3
+Standards-Version: 4.7.0
+Rules-Requires-Root: no
+Homepage: https://t.me/cheshircanest
+
+Package: weactterm
+Architecture: any
+Depends: ${shlibs:Depends}, ${misc:Depends}, libqrencode4 (>= 4.1.1), fonts-dejavu-core, fontconfig
+Description: USB text terminal for WeAct FS35 CDC ACM displays
+ Runs a Linux shell in a PTY and renders its UTF-8 terminal output on a
+ WeAct Display FS V1 3.5-inch display. Uses libvterm and FreeType, with
+ RGB565 little-endian output through the guarded library transport.
+ Hardware access requires --run; the default is a memory-only dry-run.
+ Includes read-only weact-list and weact-cli (WeActCLI) for text and images
+ on verified FS35 and FS096 devices.
+
+Package: libweact1
+Section: libs
+Architecture: any
+Depends: ${shlibs:Depends}, ${misc:Depends}
+Description: WeAct FS35 and FS096 graphics runtime library
+ Model-specific graphics and guarded FS35 transport with legacy FS096 ABI.
+
+Package: libweact-dev
+Section: libdevel
+Architecture: any
+Depends: libweact1 (= ${binary:Version}), ${misc:Depends}
+Description: WeAct graphics library development files
+ Public C headers, static library, pkg-config metadata and safe example.

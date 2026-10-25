@@ -1,0 +1,10 @@
+# Copyright (C) CheshirCa 2026   https://t.me/cheshircanest
+prefix=/usr
+libdir=@LIBDIR@
+includedir=${prefix}/include/weact
+Name: weact
+Description: WeAct FS35 and FS096 graphics
+Version: 1.0.0
+Libs: -L${libdir} -lweact
+Libs.private: -lfreetype
+Cflags: -I${includedir}

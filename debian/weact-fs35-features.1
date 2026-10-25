@@ -1,0 +1,46 @@
+.\" Copyright (C) CheshirCa 2026   https://t.me/cheshircanest
+.TH WEACT-FS35-FEATURES 1 "October 2026" "0.6.0~stage6.1" "User Commands"
+.SH NAME
+weact-fs35-features \- guarded one-shot FS35 feature diagnostic
+.SH SYNOPSIS
+.B weact-fs35-features
+.RI [ options ]
+.SH DESCRIPTION
+Default operation is a dry-run: no display is opened and no commands are sent.
+Hardware actions are mutually exclusive and must be explicitly requested.
+Both use a preserved connection, mandatory identity, occupancy and exclusive
+access checks. No automatic retry, reconnect, orientation setter or Fill.
+.SH OPTIONS
+.TP
+.B --help
+Show usage.
+.TP
+.B --dry-run
+Describe both actions without opening a device (default).
+.TP
+.B --fastlz-once
+Query orientation and require orientation 2 immediately before sending one
+compressed 64 by 48 Bitmap at (16,16). Red/green top, blue/white bottom.
+Does not change brightness. No fallback to an uncompressed Bitmap.
+.TP
+.B --brightness-once
+Read current brightness, then send one change to 20 percent (raw 51) with a
+requested 500 ms transition. Readback failure prevents the change.
+Does not draw or automatically restore the previous brightness.
+Physical transition duration has not been measured.
+.TP
+.BI --device " PATH"
+Select a matching CDC ACM node or udev alias.
+.TP
+.BI --serial " SERIAL"
+Require a unique matching serial. Ambiguous selection fails closed.
+.TP
+.B --allow-unknown-occupancy
+Explicitly allow the existing limited foreign-process permission policy.
+Scanner and namespace failures remain fatal.
+.SH LIMITATIONS
+Only FS35 orientation 2, 480 by 320. User-tested on firmware V1.0.0.1;
+other firmware is not qualified. Accepted TX does not prove visible output.
+Do not combine hardware actions. No operation runs during package installation.
+.SH SEE ALSO
+.BR weactterm (1)
